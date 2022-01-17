@@ -1,0 +1,52 @@
+﻿@using DataLibrary.BusinessLogic
+@using DataLibrary
+@model List<RoomModel>
+@{
+    ViewData["Title"] = "RoomsList";
+    
+}
+
+<h1>Details</h1>
+
+<hr />
+
+     <div style="display:flex; flex-wrap:wrap;">
+
+      @foreach (var room in @Model)
+    {
+        <div class="card text-center" style="width: 18rem; flex:2 0 29%; margin:20px;">
+        @{
+            var imageBytes = RoomGalleryProcessor.GetImage("HotelRoomId", room.Id.ToString());
+            string imageSource = MyFunctionsClass.ByteToStringSource(imageBytes);
+
+                  <img class="card-img-top" src="@imageSource" alt="Card image cap" />
+                  <div class="card-body">
+                        <h5 class="card-title">Number: @room.RoomNUmber</h5>
+                          <p class="card-text">Number of Rooms: @room.NumberOfRooms</p>
+                        <p class="card-text">@room.Description</p>
+                          <p class="card-text">Price: @room.Price$/Night</p>
+                        <input type="button" onclick="location.href='@Url.Action("Room", "Hotels", new {id= @room.Id})'"
+                        class="btn btn-primary" value="Select" />
+                  </div>
+        }
+           </div>
+    }
+    </div>
+
+         @*    <input type="button" style="float:right; margin:5px" class="btn btn-primary" value="Details" onclick="location.href='@Url.Action("Room", "Hotels", new {id= @room.Id})'" />*@
+
+            <style>
+                 .selectButton{
+                    float:right;
+                    margin-right:20px;
+                    margin-bottom:20px;
+                    background-color:#05eb27;
+                    border-radius:5px;
+                    border-color:#05eb27;
+                }
+
+            </style>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>

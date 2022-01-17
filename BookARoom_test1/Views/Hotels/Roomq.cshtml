@@ -1,0 +1,52 @@
+﻿@model BookARoom_test1.Models.RoomGalleryModel
+
+@{
+    ViewData["Title"] = "Roomq";
+}
+
+<h1>Roomq</h1>
+
+<h4>RoomGalleryModel</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Roomq" enctype="multipart/form-data">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+         
+         
+
+            <div class="form-group">
+                <label asp-for="RoomName" class="control-label"></label>
+                <input asp-for="RoomName" class="form-control" />
+                <span asp-validation-for="RoomName" class="text-danger"></span>
+            </div>
+         
+
+              <div class="form-group">
+                <label asp-for="PreviwImageFile" class="control-label"></label>
+                <input asp-for="PreviwImageFile" type="file" class="form-control" />
+                <span asp-validation-for="PreviwImageFile" class="text-danger"></span>
+            </div>
+
+            @{
+               <div class="form-group" style="visibility:hidden">
+                <label asp-for="HotelRoomId" class="control-label"></label>
+                <input asp-for="HotelRoomId" value="@ViewData["ID"]" class="form-control" />
+                <span asp-validation-for="HotelRoomId" class="text-danger"></span>
+            </div>
+            }
+
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

@@ -1,0 +1,58 @@
+﻿@using DataLibrary
+@model List<HotelModel>
+
+@{
+    ViewData["Title"] = "Hotels";
+}
+<div>
+    @foreach (var hotel in @Model)
+    {
+         var imageSource = MyFunctionsClass.ByteToStringSource(@hotel.PreviewImage);
+                 <div class="card mb-3" style=" width:800px;">
+                  <img class="card-img-top" style="height:550px; background-position: top top; object-fit: cover;" src="@imageSource" >
+                  <div class="card-body">
+                    <h5 class="card-title">@hotel.Name</h5>
+                    <p class="card-text">@hotel.Location</p>
+                    <p class="card-text"><small class="text-muted">@hotel.RoomCount Rooms</small></p>
+                    <p class="card-text"><small class="text-muted">@hotel.Rating/5</small></p>
+                  </div>
+                <input type="button" style=" margin:5px" class="btn btn-primary" value="See Free Rooms" onclick="location.href='@Url.Action("RoomsList", "Hotels", new {id= @hotel.Id})'" />
+            </div>
+
+    }
+    </div>
+
+<style>
+    .hotelName{
+        position:relative;
+        font-size:30px;
+    }
+
+ .selectButton{
+        float:right;
+        margin-right:20px;
+        margin-bottom:20px;
+        background-color:#05eb27;
+        border-radius:5px;
+        border-color:#05eb27;
+    }
+
+.imagePreview{
+    height:180px;
+    margin:15px;
+    background-position: center center;
+    max-width:200px;
+    object-fit: cover;
+}
+
+.hotelPanel{
+    background-color:#e0e0e0;
+    width:70%;
+    height:220px;
+    margin:20px;
+      display: flex;
+
+}
+
+
+</style>
