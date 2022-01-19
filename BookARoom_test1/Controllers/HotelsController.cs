@@ -39,7 +39,7 @@ namespace BookARoom_test1.Controllers
             List<HotelModel> hotels = new List<HotelModel>();
 
 
-            data.ForEach(val => hotels.Add(new HotelModel  //from DataLibrary hotel to this.hotel
+            data.ForEach(val => hotels.Add(new HotelModel  //convert  DataLibrary hotel to this.hotel
             {
                 Id = val.Id,
                 Name = val.Name,
@@ -76,9 +76,9 @@ namespace BookARoom_test1.Controllers
         public IActionResult Room(int id)
         {
             ViewData["ID"] = id;
-            var data = RoomProcessor.GetRoom(id);
+            var data = RoomProcessor.GetRoom(id); //get room from DataLibrary model
 
-            RoomModel room = new RoomModel
+            RoomModel room = new RoomModel //convert DataLibrary.RoomModel to this.RoomModel
             {
                 Description = data.Description,
                 Id = data.Id,
