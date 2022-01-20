@@ -67,7 +67,7 @@
                   </div>
                   <input id="daysCountInput" type="number" style=" max-width:10rem; margin-left:auto; margin-right:auto"  placeholder="Days.."/>
                   <div class="card-body"  style=" max-width:15rem; margin-left:auto; margin-right:auto">
-                       @using (Html.BeginForm("MakeOrder", "Hotels", new { roomNumber = @Model.RoomNUmber }, FormMethod.Post))
+                       @using (Html.BeginForm("MakeOrder", "Rooms", new { roomNumber = @Model.RoomNUmber }, FormMethod.Post))
                             {
                                 <button>Order</button>
                             }	
@@ -76,9 +76,6 @@
 
                   </div>
             </div>
-    
-              //<input  type="button" class="btn btn-primary" value="Make Order"
-              //           onclick="location.href='@Url.Action("MakeOrder", "Hotels", new {id = @Model.RoomNUmber})'" />
         }
     </div>
 

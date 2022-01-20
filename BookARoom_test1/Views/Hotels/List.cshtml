@@ -16,7 +16,7 @@
                     <p class="card-text"><small class="text-muted">@hotel.RoomCount Rooms</small></p>
                     <p class="card-text"><small class="text-muted">@hotel.Rating/5</small></p>
                   </div>
-                <input type="button" style=" margin:5px" class="btn btn-primary" value="See Free Rooms" onclick="location.href='@Url.Action("RoomsList", "Hotels", new {id= @hotel.Id})'" />
+                <input type="button" style=" margin:5px" class="btn btn-primary" value="See Free Rooms" onclick="location.href='@Url.Action("RoomsList", "Rooms", new {id= @hotel.Id})'" />
             </div>
 
     }
