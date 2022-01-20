@@ -13,7 +13,7 @@ namespace DataLibrary.DataAccess
         }
 
         public DbSet<HotelModel> Hotels { get; set; }
-        public DbSet<RoomModel> Rooma { get; set; }
+        public DbSet<RoomModel> Rooms { get; set; }
         public DbSet<RoomGalleryModel> RoomGallery { get; set; }
         public DbSet<BookedRoomsModel> BookedRooms { get; set; }
     }

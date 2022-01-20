@@ -1,16 +1,21 @@
 ﻿using DataLibrary.DataAccess;
+using DataLibrary.Interface;
 using DataLibrary.Models;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DataLibrary.BusinessLogic
 {
-    public class RoomProcessor
+    public class RoomProcessor : IRoom
     {
-        public static void Create(int roomNumber, int numberOfRooms, string description,int price, int hotelId)
+        private List<RoomModel> rooms;
+
+        public RoomProcessor()
+        {
+            Reload(); //load data into rooms
+        }
+
+        public void Create(int roomNumber, int numberOfRooms, string description, int price, int hotelId)
         {
 
             RoomModel room = new RoomModel
@@ -28,29 +33,33 @@ namespace DataLibrary.BusinessLogic
             SqlDataAccess.SaveData(sql, room);
         }
 
-        public static List<RoomModel> Load()
+        public List<RoomModel> Load()
         {
-            string sql = @"select * from dbo.Rooms;";
+            if (rooms == null)
+                Reload();
 
-            return SqlDataAccess.LoadData<RoomModel>(sql);
+            return rooms;
         }
 
-        public static List<RoomModel> GetFreeRooms()
+        public void Reload()//load data into rooms
+        {
+                string sql = @"select * from dbo.Rooms;";
+                rooms = SqlDataAccess.LoadData<RoomModel>(sql);
+        }
+
+        public List<RoomModel> GetFreeRooms()
         {
             string sql = @"select * from dbo.Rooms where IsBooked = 0;";
 
             return SqlDataAccess.LoadData<RoomModel>(sql);
         }
 
-    public static RoomModel GetRoom(int rooomNumber)
+        public RoomModel GetRoom(int rooomNumber)
         {
-            RoomModel hotel;
-
-            hotel = SqlDataAccess.GetOjbect<RoomModel>("Rooms", "Id", rooomNumber.ToString());
-            return hotel;
+            return rooms.Where(x => x.RoomNUmber == rooomNumber).FirstOrDefault();
         }
 
-        public static void BookRoom(int roomNumber)
+        public void BookRoom(int roomNumber) //mark the room as already booked
         {
             string sql = $"update dbo.Rooms Set IsBooked = True where RoomNumber = {roomNumber}";
             SqlDataAccess.ExecuteSqlRequest(sql);

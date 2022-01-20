@@ -1,7 +1,9 @@
 ﻿using BookARoom_test1.Areas.Identity.Data;
 using BookARoom_test1.Models;
 using DataLibrary.BusinessLogic;
+using DataLibrary.BusinessLogic.EntityFramework;
 using DataLibrary.DataAccess;
+using DataLibrary.Interface;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -12,6 +14,8 @@ namespace BookARoom_test1.Controllers
 {
     public class RoomsController : Controller
     {
+        IRoom roomRepository = new RoomRepository(); //Entity
+       // IRoom roomRepository = new RoomProcessor(); //Dapper
         public IActionResult Index()
         {
             return View();
@@ -23,7 +27,7 @@ namespace BookARoom_test1.Controllers
         public IActionResult RoomsList(int id)
         {
             ViewBag.Message = "RoomsList";
-            var data = RoomProcessor.GetFreeRooms();  //load all rooms from all hotels, demo version for testing
+            var data = roomRepository.GetFreeRooms();  //load all rooms from all hotels, demo version for testing
             List<RoomModel> rooms = new List<RoomModel>();
 
             data.ForEach(val => rooms.Add(new RoomModel
@@ -39,10 +43,10 @@ namespace BookARoom_test1.Controllers
             return View(rooms);
         }
 
-        public IActionResult Room(int id)
+        public IActionResult Room(int roomNUmber)
         {
-            ViewData["ID"] = id;
-            var data = RoomProcessor.GetRoom(id); //get room from DataLibrary model
+            ViewData["ID"] = roomNUmber;
+            var data = roomRepository.GetRoom(roomNUmber); //get room from DataLibrary model
 
             RoomModel room = new RoomModel //convert DataLibrary.RoomModel to this.RoomModel
             {
@@ -61,10 +65,10 @@ namespace BookARoom_test1.Controllers
         [HttpPost]
         public async Task<IActionResult> MakeOrder(int roomNumber)
         {
-            SqlDataAccess.ExecuteSqlRequest($"update dbo.Rooms set IsBooked = 'true' where RoomNumber = {roomNumber}"); //mark the room as already booked
-            var user = SqlDataAccess.GetOjbect<AuthUser>("AspNetUsers", "Id", User.Identity.GetUserId()); //fix
+            roomRepository.BookRoom(roomNumber);
+            var user = SqlDataAccess.GetOjbect<AuthUser>("AspNetUsers", "Id", User.Identity.GetUserId());
             BookedRoomsProcessor.Create(roomNumber, user.Email);
-            return RedirectToAction("List", "Hotels");
+            return RedirectToAction("RoomsList", "Rooms");
         }
     }
 }

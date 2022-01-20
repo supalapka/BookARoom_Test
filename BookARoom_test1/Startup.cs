@@ -4,15 +4,9 @@ using DataLibrary.DataAccess;
 using DataLibrary.Interface;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace BookARoom_test1
 {
@@ -21,8 +15,8 @@ namespace BookARoom_test1
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
-            SqlDataAccess.connectionString = Configuration.GetConnectionString("connectionString"); 
-            MyDbContext.connectionString = Configuration.GetConnectionString("connectionString"); 
+            SqlDataAccess.connectionString = Configuration.GetConnectionString("connectionString");
+            MyDbContext.connectionString = Configuration.GetConnectionString("connectionString");
         }
 
         public IConfiguration Configuration { get; }
@@ -33,8 +27,12 @@ namespace BookARoom_test1
             services.AddControllersWithViews();
             services.AddRazorPages();
 
-            services.AddSingleton<IHotel, HotelProcessor>();
-            services.AddSingleton<IHotel, HotelRepository>();
+            services.AddSingleton<IHotel, HotelProcessor>();//dapper
+            services.AddSingleton<IHotel, HotelRepository>(); //entity
+
+            services.AddSingleton<IRoom, RoomProcessor>();//dapper
+            services.AddSingleton<IRoom, RoomRepository>();//entity
+
         }
 
 

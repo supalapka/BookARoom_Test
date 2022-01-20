@@ -171,9 +171,11 @@
     <Compile Include="BusinessLogic\Dapper\RoomProcessor.cs" />
     <Compile Include="BusinessLogic\Dapper\UserProcessor.cs" />
     <Compile Include="BusinessLogic\EntityFramework\HotelRepository.cs" />
+    <Compile Include="BusinessLogic\EntityFramework\RoomRepository.cs" />
     <Compile Include="DataAccess\MyDbContext.cs" />
     <Compile Include="DataAccess\SqlDataAccess.cs" />
     <Compile Include="Interface\IHotel.cs" />
+    <Compile Include="Interface\IRoom.cs" />
     <Compile Include="Models\BookedRoomsModel.cs" />
     <Compile Include="Models\HotelModel.cs" />
     <Compile Include="Models\RoomGalleryModel.cs" />
