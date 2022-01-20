@@ -10,7 +10,7 @@ namespace DataLibrary.BusinessLogic
 {
     public class RoomGalleryProcessor
     {
-        public static int Create(int hotelRoomId, string roomName, byte[] image)
+        public static void Create(int hotelRoomId, string roomName, byte[] image)
         {
 
             RoomGalleryModel room = new RoomGalleryModel
@@ -23,7 +23,7 @@ namespace DataLibrary.BusinessLogic
             string sql = @"insert into dbo.RoomGallery (HotelRoomId, RoomName, PreviewImage) 
                 values (@HotelRoomId, @RoomName, @PreviewImage);";
 
-            return SqlDataAccess.SaveData(sql, room);
+            SqlDataAccess.SaveData(sql, room);
         }
 
         public static List<RoomGalleryModel> Load()

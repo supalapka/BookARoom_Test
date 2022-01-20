@@ -1,24 +1,16 @@
 ﻿using BookARoom_test1.Models;
+using DataLibrary;
 using DataLibrary.BusinessLogic;
 using Microsoft.AspNetCore.Mvc;
-using System.Configuration;
-using System.Threading.Tasks;
-using Microsoft.Extensions.Configuration;
-using System.Collections.Generic;
-using DataLibrary;
-using System.Web.Helpers;
-using System.Drawing;
-using System.Web;
-using System.IO;
-using Microsoft.AspNetCore.Http;
-using System.Linq;
 using System;
+using System.Threading.Tasks;
 
 namespace BookARoom_test1.Controllers
 {
     public class HomeController : Controller
     {
 
+     
         public IActionResult Index()
         {
             ViewBag.Message = "Index";
@@ -50,7 +42,7 @@ namespace BookARoom_test1.Controllers
         {
             ViewBag.Message = "Input Hotel async";
 
-            int record = HotelProcessor.Create(hotel.Name,hotel.Location,hotel.Rating,hotel.RoomCount, MyFunctionsClass.FileToByteArrayAsync(hotel.PreviwImageFile));
+           // int record = HotelProcessor.Create(hotel.Name, hotel.Location, hotel.Rating, hotel.RoomCount, MyFunctionsClass.FileToByteArrayAsync(hotel.PreviwImageFile));
 
             return RedirectToAction("Index");
 
@@ -59,7 +51,7 @@ namespace BookARoom_test1.Controllers
         [HttpPost]
         public async Task<IActionResult> SignUp(UserModel user)
         {
-            int reccordsCreated = UserProcessor.Create(user.Login, user.Password);
+            UserProcessor.Create(user.Login, user.Password);
             return RedirectToAction("Index");
         }
 

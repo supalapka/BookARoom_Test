@@ -10,7 +10,7 @@ namespace DataLibrary.BusinessLogic
 {
     public class RoomProcessor
     {
-        public static int Create(int roomNumber, int numberOfRooms, string description,int price, int hotelId)
+        public static void Create(int roomNumber, int numberOfRooms, string description,int price, int hotelId)
         {
 
             RoomModel room = new RoomModel
@@ -25,7 +25,7 @@ namespace DataLibrary.BusinessLogic
             string sql = @"insert into dbo.Rooms (RoomNUmber, NumberOfRooms, Description, Price, HotelId) 
                 values (@RoomNUmber, @NumberOfRooms, @Description, @Price, @HotelId);";
 
-            return SqlDataAccess.SaveData(sql, room);
+            SqlDataAccess.SaveData(sql, room);
         }
 
         public static List<RoomModel> Load()

@@ -10,7 +10,7 @@ namespace DataLibrary.BusinessLogic
 {
     public static class UserProcessor
     {
-        public static int Create(string login, string password)
+        public static void Create(string login, string password)
         {
 
             UserModel user = new UserModel { Login = login, Password = password };
@@ -18,7 +18,7 @@ namespace DataLibrary.BusinessLogic
             string sql = @"insert into dbo.Users (Login, Password) 
                 values (@Login, @Password);";
 
-            return SqlDataAccess.SaveData(sql, user);
+            SqlDataAccess.SaveData(sql, user);
         }
 
         public static List<UserModel> Load()

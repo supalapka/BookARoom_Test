@@ -16,7 +16,7 @@ namespace BookARoom_test1.Models
         [Required]
         public string Location { get; set; }
         [Required]
-        public float Rating { get; set; }
+        public double Rating { get; set; }
         [Required]
         public int RoomCount { get; set; }
         public byte[] PreviewImage { get; set; } //image that shows

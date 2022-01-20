@@ -8,7 +8,7 @@ namespace DataLibrary.DataAccess
 {
     public class SqlDataAccess
     {
-        public static string connectionString; //fix later
+        public static string connectionString; 
         public static string GetConnectionString()
         {
             return connectionString;
@@ -22,11 +22,11 @@ namespace DataLibrary.DataAccess
             }
         }
 
-        public static int SaveData<T>(string sql, T data)
+        public static void SaveData<T>(string sql, T data)
         {
             using (IDbConnection ctx = new SqlConnection(GetConnectionString()))
             {
-                return ctx.Execute(sql, data);
+                ctx.Execute(sql, data);
             }
         }
 

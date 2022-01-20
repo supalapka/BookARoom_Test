@@ -2,7 +2,9 @@
 using BookARoom_test1.Models;
 using DataLibrary;
 using DataLibrary.BusinessLogic;
+using DataLibrary.BusinessLogic.EntityFramework;
 using DataLibrary.DataAccess;
+using DataLibrary.Interface;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -13,6 +15,16 @@ namespace BookARoom_test1.Controllers
 {
     public class HotelsController : Controller
     {
+        //HotelRepository -> Entiry
+        //Hotelprocessor -> Dapper
+        IHotel hotelRepository = new HotelRepository();
+        //IHotel hotelRepository = new Hotelprocessor();
+
+        public HotelsController(IHotel _hotelRepository)
+        {
+            hotelRepository = _hotelRepository;
+        }
+
         public IActionResult Index()
         {
             return RedirectToAction("List", "Hotels");
@@ -27,7 +39,7 @@ namespace BookARoom_test1.Controllers
         [HttpPost]
         public IActionResult CreateHotel(HotelModel hotel)
         {
-            int record = HotelProcessor.Create(hotel.Name, hotel.Location, hotel.Rating, hotel.RoomCount, MyFunctionsClass.FileToByteArrayAsync(hotel.PreviwImageFile));
+            hotelRepository.Create(hotel.Name, hotel.Location, hotel.Rating, hotel.RoomCount, MyFunctionsClass.FileToByteArrayAsync(hotel.PreviwImageFile));
             return View();
         }
 
@@ -35,7 +47,7 @@ namespace BookARoom_test1.Controllers
         public IActionResult List()
         {
             ViewBag.Message = "List";
-            var data = HotelProcessor.Load();  // data from DataLibrary project
+            var data = hotelRepository.Load(); 
             List<HotelModel> hotels = new List<HotelModel>();
 
 
@@ -97,7 +109,7 @@ namespace BookARoom_test1.Controllers
         {
             SqlDataAccess.ExecuteSqlRequest($"update dbo.Rooms set IsBooked = 'true' where RoomNumber = {roomNumber}"); //mark the room as already booked
             var user = SqlDataAccess.GetOjbect<AuthUser>("AspNetUsers", "Id", User.Identity.GetUserId());
-            BookedRoomsProcessor.Create(roomNumber,user.Email);
+            BookedRoomsProcessor.Create(roomNumber, user.Email);
             return RedirectToAction("List", "Hotels");
         }
 

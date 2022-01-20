@@ -1,4 +1,7 @@
+using DataLibrary.BusinessLogic;
+using DataLibrary.BusinessLogic.EntityFramework;
 using DataLibrary.DataAccess;
+using DataLibrary.Interface;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -18,7 +21,8 @@ namespace BookARoom_test1
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
-            SqlDataAccess.connectionString = Configuration.GetConnectionString("connectionString"); //fix later
+            SqlDataAccess.connectionString = Configuration.GetConnectionString("connectionString"); 
+            MyDbContext.connectionString = Configuration.GetConnectionString("connectionString"); 
         }
 
         public IConfiguration Configuration { get; }
@@ -28,6 +32,9 @@ namespace BookARoom_test1
         {
             services.AddControllersWithViews();
             services.AddRazorPages();
+
+            services.AddSingleton<IHotel, HotelProcessor>();
+            services.AddSingleton<IHotel, HotelRepository>();
         }
 
 
