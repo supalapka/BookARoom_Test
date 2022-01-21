@@ -29,7 +29,7 @@ namespace BookARoom_test1.Controllers
         {
             ViewBag.Message = "List";
             var data = hotelRepository.Load();
-            List<HotelModel> hotels = new List<HotelModel>();
+            List<HotelModel> hotels = new List<HotelModel>(); // output list
 
 
             data.ForEach(val => hotels.Add(new HotelModel  //convert  DataLibrary hotel to this.hotel

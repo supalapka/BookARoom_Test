@@ -26,7 +26,7 @@
         {
             var imageSource = MyFunctionsClass.ByteToStringSource(@image.PreviewImage);
 
-                    if(i == 0) // first item must be class=active
+                    if(i == 0) // first item must have class=active
                     {
                     i++;
                         <div class="carousel-item active">
@@ -65,13 +65,17 @@
                     <h5  class="card-title">Book @Model.RoomNUmber room?</h5>
                     <p style="margin-left:auto; margin-right:auto;">order for</p>
                   </div>
-                  <input id="daysCountInput" type="number" style=" max-width:10rem; margin-left:auto; margin-right:auto"  placeholder="Days.."/>
+
                   <div class="card-body"  style=" max-width:15rem; margin-left:auto; margin-right:auto">
-                       @using (Html.BeginForm("MakeOrder", "Rooms", new { roomNumber = @Model.RoomNUmber }, FormMethod.Post))
-                            {
-                                <button>Order</button>
-                            }	
-                         <p id="priceOutput"  style="margin-left:auto; margin-right:auto;">0$</p>
+                        @using (Html.BeginForm("MakeOrder", "Rooms", FormMethod.Post))
+                               {
+                                     <input id="daysCountInput" name="days" type="number" style=" max-width:10rem; margin-left:auto; margin-right:auto"  placeholder="Days.."/>
+                                     <input id="price" name="price" type="number" style="visibility:hidden"/>
+                                     <input  name="roomNumber" value="@Model.RoomNUmber" type="number" style="visibility:hidden"/>
+                                     <button type="submit" >Order</button>
+                                     <p id="priceOutput"  style="margin-left:auto; margin-right:auto;">0$</p>
+
+                                }
                          
 
                   </div>

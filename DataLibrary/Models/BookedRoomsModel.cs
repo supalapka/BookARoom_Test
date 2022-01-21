@@ -11,5 +11,8 @@ namespace DataLibrary.Models
         public int Id { get; set; }
         public int RoomNumber { get; set; }
         public string OwnerEmail { get; set; }
+        public DateTime StartDate { get; set; }
+        public DateTime EndDate { get; set; }
+        public int Price { get; set; }
     }
 }

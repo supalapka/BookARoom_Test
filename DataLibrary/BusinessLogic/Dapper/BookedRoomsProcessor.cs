@@ -11,13 +11,14 @@ namespace DataLibrary.BusinessLogic
     public class BookedRoomsProcessor
     {
 
-        public static void Create(int roomNumber, string ownerEmail)
+        public static void Create(int roomNumber, string ownerEmail,DateTime start,DateTime end,int price)
         {
 
-            BookedRoomsModel bookedRoom = new BookedRoomsModel { OwnerEmail = ownerEmail, RoomNumber = roomNumber };
+            BookedRoomsModel bookedRoom = new BookedRoomsModel { OwnerEmail = ownerEmail, RoomNumber = roomNumber,
+                StartDate = start, EndDate = end, Price = price};
 
-            string sql = @"insert into dbo.BookedRooms (OwnerEmail, RoomNumber) 
-                values (@OwnerEmail, @RoomNumber);";
+            string sql = @"insert into dbo.BookedRooms (OwnerEmail, RoomNumber,StartDate, EndDate, Price) 
+                values (@OwnerEmail, @RoomNumber, @StartDate, @EndDate, @Price);";
 
             SqlDataAccess.SaveData(sql, bookedRoom);
         }

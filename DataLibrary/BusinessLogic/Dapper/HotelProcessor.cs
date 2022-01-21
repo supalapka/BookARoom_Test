@@ -2,12 +2,18 @@
 using DataLibrary.Interface;
 using DataLibrary.Models;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace DataLibrary.BusinessLogic
 {
     public class HotelProcessor : IHotel
     {
         private List<HotelModel> hotels;
+
+        public HotelProcessor()
+        {
+            Reload();
+        }
         public void Create(string name, string location, double rating, int roomsCount, byte[] previewImage)
         {
 
@@ -29,19 +35,23 @@ namespace DataLibrary.BusinessLogic
         public List<HotelModel> Load()
         {
             if (hotels == null)
-            {
-                string sql = @"select * from dbo.Hotels;";
-                hotels = SqlDataAccess.LoadData<HotelModel>(sql);
-            }
+                Reload();
+
             return hotels;
+        }
+
+
+        public void Reload()
+        {
+            string sql = @"select * from dbo.Hotels;";
+            hotels = SqlDataAccess.LoadData<HotelModel>(sql);
         }
 
         public HotelModel GetHotel(int _id)
         {
-            HotelModel hotel;
 
-            hotel = SqlDataAccess.GetOjbect<HotelModel>("Hotels", "Id", _id.ToString());
-            return hotel;
+           // hotel = SqlDataAccess.GetOjbect<HotelModel>("Hotels", "Id", _id.ToString());
+            return hotels.Where(x => x.Id == _id).Single(); ;
         }
 
     }
