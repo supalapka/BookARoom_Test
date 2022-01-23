@@ -71,7 +71,8 @@ namespace BookARoom_test1.Controllers
             var user = SqlDataAccess.GetOjbect<AuthUser>("AspNetUsers", "Id", User.Identity.GetUserId());
             DateTime startDate = DateTime.Today;
             DateTime endDate = DateTime.Today.AddDays(days);
-            BookedRoomsProcessor.Create(roomNumber, user.Email, startDate, endDate,price);
+            IBookedRooms booked = new BookedRoomsProcessor();
+            booked.Create(roomNumber, user.Email, startDate, endDate,price);
             return RedirectToAction("Index", "Hotels");
         }
     }

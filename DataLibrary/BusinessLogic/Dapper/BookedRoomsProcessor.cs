@@ -1,4 +1,5 @@
 ﻿using DataLibrary.DataAccess;
+using DataLibrary.Interface;
 using DataLibrary.Models;
 using System;
 using System.Collections.Generic;
@@ -8,10 +9,10 @@ using System.Threading.Tasks;
 
 namespace DataLibrary.BusinessLogic
 {
-    public class BookedRoomsProcessor
+    public class BookedRoomsProcessor: IBookedRooms
     {
 
-        public static void Create(int roomNumber, string ownerEmail,DateTime start,DateTime end,int price)
+        public void Create(int roomNumber, string ownerEmail,DateTime start,DateTime end,int price)
         {
 
             BookedRoomsModel bookedRoom = new BookedRoomsModel { OwnerEmail = ownerEmail, RoomNumber = roomNumber,
@@ -23,13 +24,17 @@ namespace DataLibrary.BusinessLogic
             SqlDataAccess.SaveData(sql, bookedRoom);
         }
 
-        public static List<BookedRoomsModel> Load()
+        public List<BookedRoomsModel> Load()
         {
             string sql = @"select *  from dbo.BookedRooms;";
 
             return SqlDataAccess.LoadData<BookedRoomsModel>(sql);
         }
 
-
+        public int TotalSum()
+        {
+            string sql = @"select sum(Price) from dbo.BookedRooms;";
+            return SqlDataAccess.GetSum(sql);
+        }
     }
 }

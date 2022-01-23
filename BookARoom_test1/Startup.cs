@@ -1,9 +1,12 @@
+using BookARoom_test1.Areas.Identity.Data;
+using BookARoom_test1.Data;
 using DataLibrary.BusinessLogic;
 using DataLibrary.BusinessLogic.EntityFramework;
 using DataLibrary.DataAccess;
 using DataLibrary.Interface;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -33,7 +36,8 @@ namespace BookARoom_test1
             services.AddSingleton<IRoom, RoomProcessor>();//dapper
             services.AddSingleton<IRoom, RoomRepository>();//entity
 
-        }
+            
+        }   
 
 
 

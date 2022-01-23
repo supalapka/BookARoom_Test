@@ -1,4 +1,5 @@
 ﻿using Dapper;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
@@ -51,6 +52,14 @@ namespace DataLibrary.DataAccess
             using (IDbConnection ctx = new SqlConnection(GetConnectionString()))
             {
                 ctx.Execute(sql);
+            }
+        }
+
+        public static int GetSum(string sql) //rename adn set generic type
+        {
+            using (IDbConnection ctx = new SqlConnection(GetConnectionString()))
+            {
+                return Convert.ToInt32(ctx.Query<int>(sql).Single());
             }
         }
     }
