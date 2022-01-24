@@ -13,21 +13,22 @@ using System.Threading.Tasks;
 
 namespace BookARoom_test1.Controllers
 {
+    [Authorize]
     public class RoomsController : Controller
     {
         IRoom roomRepository = new RoomRepository(); //Entity
-                                                     // IRoom roomRepository = new RoomProcessor(); //Dapper
+       // IRoom roomRepository = new RoomProcessor(); //Dapper
         public IActionResult Index()
         {
             return View();
         }
 
-
-        [Authorize]
+        
         [Route("Hotels/{id:int}")]
         public IActionResult RoomsList(int id)
         {
             ViewBag.Message = "RoomsList";
+            ViewData["HotelId"] = id;
             var data = roomRepository.GetFreeRooms();  //load all rooms from all hotels, demo version for testing
 
             List<RoomModel> rooms = new List<RoomModel>(); //output list
@@ -45,9 +46,11 @@ namespace BookARoom_test1.Controllers
             return View(rooms);
         }
 
-        public IActionResult Room(int roomNUmber)
+        [Route("Hotels/{hotelId:int}/{roomNUmber:int}")]
+        public IActionResult Room(int hotelId, int roomNUmber)
         {
             ViewData["ID"] = roomNUmber;
+            ViewData["HotelId"] = hotelId;
             var data = roomRepository.GetRoom(roomNUmber); //get room from DataLibrary model
 
             RoomModel room = new RoomModel //convert DataLibrary.RoomModel to this.RoomModel
@@ -65,14 +68,14 @@ namespace BookARoom_test1.Controllers
 
 
         [HttpPost]
-        public async Task<IActionResult> MakeOrder(int roomNumber, int days,int price)
+        public async Task<IActionResult> MakeOrder(int hotelId,int roomNumber, int days,int price)
         {
             roomRepository.BookRoom(roomNumber); //mark room as booked
             var user = SqlDataAccess.GetOjbect<AuthUser>("AspNetUsers", "Id", User.Identity.GetUserId());
             DateTime startDate = DateTime.Today;
             DateTime endDate = DateTime.Today.AddDays(days);
             IBookedRooms booked = new BookedRoomsProcessor();
-            booked.Create(roomNumber, user.Email, startDate, endDate,price);
+            booked.Create(hotelId,roomNumber, user.Email, startDate, endDate,price);
             return RedirectToAction("Index", "Hotels");
         }
     }

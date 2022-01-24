@@ -3,23 +3,27 @@ using DataLibrary.Interface;
 using DataLibrary.Models;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DataLibrary.BusinessLogic
 {
-    public class BookedRoomsProcessor: IBookedRooms
+    public class BookedRoomsProcessor : IBookedRooms
     {
 
-        public void Create(int roomNumber, string ownerEmail,DateTime start,DateTime end,int price)
+        public void Create(int hotelId, int roomNumber, string ownerEmail, DateTime start, DateTime end, int price)
         {
 
-            BookedRoomsModel bookedRoom = new BookedRoomsModel { OwnerEmail = ownerEmail, RoomNumber = roomNumber,
-                StartDate = start, EndDate = end, Price = price};
+            BookedRoomsModel bookedRoom = new BookedRoomsModel
+            {
+                HotelId = hotelId,
+                OwnerEmail = ownerEmail,
+                RoomNumber = roomNumber,
+                StartDate = start,
+                EndDate = end,
+                Price = price
+            };
 
-            string sql = @"insert into dbo.BookedRooms (OwnerEmail, RoomNumber,StartDate, EndDate, Price) 
-                values (@OwnerEmail, @RoomNumber, @StartDate, @EndDate, @Price);";
+            string sql = @"insert into dbo.BookedRooms (HotelId, OwnerEmail, RoomNumber,StartDate, EndDate, Price) 
+                values (@HotelId, @OwnerEmail, @RoomNumber, @StartDate, @EndDate, @Price);";
 
             SqlDataAccess.SaveData(sql, bookedRoom);
         }

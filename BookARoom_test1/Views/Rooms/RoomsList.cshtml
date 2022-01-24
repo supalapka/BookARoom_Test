@@ -24,15 +24,13 @@
                           <p class="card-text">Number of Rooms: @room.NumberOfRooms</p>
                         <p class="card-text">@room.Description</p>
                           <p class="card-text">Price: @room.Price$/Night</p>
-                        <input type="button" onclick="location.href='@Url.Action("Room", "Rooms", new {roomNUmber= @room.RoomNUmber})'"
+                        <input type="button" onclick="location.href='@Url.Action("Room", "Rooms", new {hotelId = ViewData["HotelId"],roomNUmber= @room.RoomNUmber})'"
                         class="btn btn-primary" value="Select" />
                   </div>
         }
            </div>
     }
     </div>
-
-         @*    <input type="button" style="float:right; margin:5px" class="btn btn-primary" value="Details" onclick="location.href='@Url.Action("Room", "Hotels", new {id= @room.Id})'" />*@
 
             <style>
                  .selectButton{

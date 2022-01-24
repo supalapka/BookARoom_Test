@@ -10,7 +10,7 @@ namespace DataLibrary.Interface
     public interface IBookedRooms
     {
         List<BookedRoomsModel> Load();
-        void Create(int roomNumber, string ownerEmail,DateTime startDate,DateTime endDate, int price);
+        void Create(int hotelId, int roomNumber, string ownerEmail,DateTime startDate,DateTime endDate, int price);
         int TotalSum();
 
     }

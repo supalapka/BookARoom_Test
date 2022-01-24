@@ -70,6 +70,7 @@
                         @using (Html.BeginForm("MakeOrder", "Rooms", FormMethod.Post))
                                {
                                      <input id="daysCountInput" name="days" type="number" style=" max-width:10rem; margin-left:auto; margin-right:auto"  placeholder="Days.."/>
+                                     <input  name="hotelId" type="number" value="@ViewData["HotelId"]" style="visibility:hidden"/>
                                      <input id="price" name="price" type="number" style="visibility:hidden"/>
                                      <input  name="roomNumber" value="@Model.RoomNUmber" type="number" style="visibility:hidden"/>
                                      <button type="submit" >Order</button>
