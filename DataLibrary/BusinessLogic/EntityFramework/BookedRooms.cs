@@ -10,11 +10,11 @@ namespace DataLibrary.BusinessLogic.EntityFramework
     public class BookedRooms : IBookedRooms
     {
         MyDbContext ctx = new MyDbContext();
-        public void Create(int hotelId, int roomNumber, string ownerEmail, DateTime startDate, DateTime endDate, int price)
+        public void Create(string hotelName, int roomNumber, string ownerEmail, DateTime startDate, DateTime endDate, int price)
         {
             ctx.BookedRooms.Add(new BookedRoomsModel
             {
-                HotelId = hotelId,
+                HotelName = hotelName,
                 RoomNumber = roomNumber,
                 OwnerEmail = ownerEmail,
                 StartDate = startDate,

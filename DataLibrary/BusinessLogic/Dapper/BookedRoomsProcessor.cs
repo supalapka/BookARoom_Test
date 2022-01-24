@@ -9,12 +9,12 @@ namespace DataLibrary.BusinessLogic
     public class BookedRoomsProcessor : IBookedRooms
     {
 
-        public void Create(int hotelId, int roomNumber, string ownerEmail, DateTime start, DateTime end, int price)
+        public void Create(string hotelName, int roomNumber, string ownerEmail, DateTime start, DateTime end, int price)
         {
 
             BookedRoomsModel bookedRoom = new BookedRoomsModel
             {
-                HotelId = hotelId,
+                HotelName = hotelName,
                 OwnerEmail = ownerEmail,
                 RoomNumber = roomNumber,
                 StartDate = start,
@@ -22,8 +22,8 @@ namespace DataLibrary.BusinessLogic
                 Price = price
             };
 
-            string sql = @"insert into dbo.BookedRooms (HotelId, OwnerEmail, RoomNumber,StartDate, EndDate, Price) 
-                values (@HotelId, @OwnerEmail, @RoomNumber, @StartDate, @EndDate, @Price);";
+            string sql = @"insert into dbo.BookedRooms (HotelName, OwnerEmail, RoomNumber,StartDate, EndDate, Price) 
+                values (@HotelName, @OwnerEmail, @RoomNumber, @StartDate, @EndDate, @Price);";
 
             SqlDataAccess.SaveData(sql, bookedRoom);
         }

@@ -4,7 +4,7 @@ namespace BookARoom_test1.Models
 {
     public class BookedRoomsModel
     {
-        public int HotelId { get; set; }
+        public string HotelName { get; set; }
         public int RoomNumber { get; set; }
         public string OwnerEmail { get; set; }
         public DateTime StartDate { get; set; }
