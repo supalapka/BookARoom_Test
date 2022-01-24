@@ -15,7 +15,7 @@ namespace DataLibrary.BusinessLogic
             Reload(); //load data into rooms
         }
 
-        public void Create(int roomNumber, int numberOfRooms, string description, int price, int hotelId)
+        public void Create(int roomNumber, int numberOfRooms, string description, int price, string hotenName)
         {
 
             RoomModel room = new RoomModel
@@ -24,11 +24,11 @@ namespace DataLibrary.BusinessLogic
                 NumberOfRooms = numberOfRooms,
                 Description = description,
                 Price = price,
-                HotelId = hotelId,
+                HotelName = hotenName,
             };
 
-            string sql = @"insert into dbo.Rooms (RoomNUmber, NumberOfRooms, Description, Price, HotelId) 
-                values (@RoomNUmber, @NumberOfRooms, @Description, @Price, @HotelId);";
+            string sql = @"insert into dbo.Rooms (RoomNUmber, NumberOfRooms, Description, Price, HotelName) 
+                values (@RoomNUmber, @NumberOfRooms, @Description, @Price, @HotelName);";
 
             SqlDataAccess.SaveData(sql, room);
         }
@@ -47,9 +47,9 @@ namespace DataLibrary.BusinessLogic
                 rooms = SqlDataAccess.LoadData<RoomModel>(sql);
         }
 
-        public List<RoomModel> GetFreeRooms()
+        public List<RoomModel> GetFreeRooms(string hotelName)
         {
-            string sql = @"select * from dbo.Rooms where IsBooked = 0;";
+            string sql = $"select * from dbo.Rooms where IsBooked = 0 && HotelName = '{hotelName}';";
 
             return SqlDataAccess.LoadData<RoomModel>(sql);
         }

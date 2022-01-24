@@ -29,14 +29,14 @@ namespace BookARoom_test1.Controllers
         {
             ViewBag.Message = "RoomsList";
             ViewData["hotelName"] = hotelName;
-            var data = roomRepository.GetFreeRooms();  //load all rooms from all hotels, demo version for testing
+            var data = roomRepository.GetFreeRooms(hotelName.Replace('_', ' '));  //load all rooms from all hotels, demo version for testing
 
             List<RoomModel> rooms = new List<RoomModel>(); //output list
 
             data.ForEach(val => rooms.Add(new RoomModel  //convert DataLibrary model to this model
             {
                 Id = val.Id,
-                HotelId = val.HotelId,
+                HotelName = val.HotelName,
                 NumberOfRooms = val.NumberOfRooms,
                 Description = val.Description,
                 Price = val.Price,
@@ -58,11 +58,10 @@ namespace BookARoom_test1.Controllers
                 Description = data.Description,
                 Id = data.Id,
                 NumberOfRooms = data.NumberOfRooms,
-                HotelId = data.HotelId,
+                HotelName = data.HotelName,
                 Price = data.Price,
                 RoomNUmber = data.RoomNUmber
             };
-            ViewData["hotelId"] = room.HotelId;
             return View(room);
         }
 

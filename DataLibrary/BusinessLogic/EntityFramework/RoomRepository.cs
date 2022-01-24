@@ -25,7 +25,7 @@ namespace DataLibrary.BusinessLogic.EntityFramework
             ctx.SaveChangesAsync();
         }
 
-        public void Create(int roomNumber, int numberOfRooms, string description, int price, int hotelId)
+        public void Create(int roomNumber, int numberOfRooms, string description, int price, string hotelName)
         {
             ctx.Rooms.Add(new RoomModel
             {
@@ -33,14 +33,14 @@ namespace DataLibrary.BusinessLogic.EntityFramework
                 NumberOfRooms = numberOfRooms,
                 Description = description,
                 Price = price,
-                HotelId = hotelId
+                HotelName = hotelName
             });
             ctx.SaveChangesAsync();
         }
 
-        public List<RoomModel> GetFreeRooms()
+        public List<RoomModel> GetFreeRooms(string hotelName)
         {
-            return rooms.Where(x => x.IsBooked == false).ToList();
+            return rooms.Where(x => x.IsBooked == false && x.HotelName == hotelName).ToList();
         }
 
         public RoomModel GetRoom(int rooomNumber)
