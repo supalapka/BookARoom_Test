@@ -11,15 +11,22 @@ namespace BookARoom_test1.Models
     public class HotelModel
     {
         public int Id { get; set; }
+
         [Required]
         public string Name { get; set; }
+
+        public string OwnerEmail { get; set; }
+
         [Required]
         public string Location { get; set; }
+
         [Required]
         public double Rating { get; set; }
+
         [Required]
         public int RoomCount { get; set; }
         public byte[] PreviewImage { get; set; } //image that shows
+
         [Required]
         public IFormFile PreviwImageFile { get; set; } //image that uploads while creating hotel
     }

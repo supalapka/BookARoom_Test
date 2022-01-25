@@ -10,6 +10,7 @@ namespace DataLibrary.Models
     {
         public int Id { get; set; }
         public string Name { get; set; }
+        public string OwnerEmail { get; set; }
         public string Location { get; set; }
         public double Rating { get; set; }
         public int RoomsCount { get; set; }

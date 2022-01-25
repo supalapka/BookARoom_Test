@@ -12,5 +12,6 @@ namespace DataLibrary.Interface
         void Create(string name, string location, double rating, int roomsCount, byte[] previewImage);
 
         List<HotelModel> Load();
+        void Delete(int id);
     }
 }

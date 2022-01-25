@@ -1,0 +1,28 @@
+﻿@model  List<BookedRoomsModel>
+@{
+    ViewData["Title"] = "TotalProfit";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+@{
+        int total = 0;
+
+    foreach(var room in @Model)
+    {
+        <div style="margin:30px; background-color:lightgray; padding:10px">
+        <h1>@room.HotelName</h1>
+        <h2>Room number: @room.RoomNumber</h2>
+        <p>Owner: @room.OwnerEmail</p>
+        <p>Start at: @room.StartDate</p>
+        <p>End at: @room.EndDate</p>
+        <p>Price: @room.Price$</p>
+        </div>
+     total += @room.Price;
+    }
+        <h1>Total Earnings: @total$</h1>
+        total = total / 100 * 5; // website takes 5% of total
+        <h1>After payment to owners Earnings: @total$</h1>
+
+}
+

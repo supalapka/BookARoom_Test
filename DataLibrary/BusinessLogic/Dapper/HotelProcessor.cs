@@ -54,5 +54,11 @@ namespace DataLibrary.BusinessLogic
             return hotels.Where(x => x.Id == _id).Single(); ;
         }
 
+        public void Delete(int id)
+        {
+            string sql = $"DELETE from dbo.Hotels where Id = {id}";
+            SqlDataAccess.ExecuteSqlRequest(sql);
+            Reload();
+        }
     }
 }
