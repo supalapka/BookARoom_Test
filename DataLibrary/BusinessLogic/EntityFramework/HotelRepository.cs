@@ -3,7 +3,6 @@ using DataLibrary.Interface;
 using DataLibrary.Models;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace DataLibrary.BusinessLogic.EntityFramework
 {
@@ -11,7 +10,7 @@ namespace DataLibrary.BusinessLogic.EntityFramework
     {
         private List<HotelModel> hotels;
         MyDbContext ctx = new MyDbContext();
-        public async void Create(string name, string location, double rating, int roomsCount, byte[] previewImage)
+        public async void Create(string name, string ownerEmail, string location, double rating, int roomsCount, byte[] previewImage, bool isConfirmed)
         {
             HotelModel hotel = new HotelModel
             {
@@ -19,22 +18,29 @@ namespace DataLibrary.BusinessLogic.EntityFramework
                 Location = location,
                 Rating = rating,
                 RoomsCount = roomsCount,
-                PreviewImage = previewImage
+                PreviewImage = previewImage,
+                OwnerEmail = ownerEmail,
+                IsConfirmed = isConfirmed,
             };
 
             ctx.Hotels.Add(hotel);
             await ctx.SaveChangesAsync();
         }
 
-        public List<HotelModel> Load()
+        public List<HotelModel> LoadConfirmed()
         {
             if (hotels == null)
                 Reload();
-            hotels = ctx.Hotels.ToList();
 
             return hotels;
         }
-        public void Reload() { hotels = ctx.Hotels.ToList(); }
+
+        public List<HotelModel> LoadUnconfirmed()
+        {
+            return ctx.Hotels.Where(x => x.IsConfirmed == false).ToList();
+        }
+
+        public void Reload() { hotels = ctx.Hotels.Where(x => x.IsConfirmed == true).ToList(); }
 
         public HotelModel GetHotel(int _id) { return ctx.Hotels.Where(x => x.Id == _id).Single(); }
 
@@ -42,6 +48,14 @@ namespace DataLibrary.BusinessLogic.EntityFramework
         {
             if (hotels == null) Reload();
             ctx.Hotels.Remove(hotels.Where(x => x.Id == id).Single());
+            await ctx.SaveChangesAsync();
+            Reload();
+        }
+
+        public async void Confirm(int id)
+        {
+
+            ctx.Hotels.Where(x => x.Id == id).Single().IsConfirmed = true;
             await ctx.SaveChangesAsync();
             Reload();
         }

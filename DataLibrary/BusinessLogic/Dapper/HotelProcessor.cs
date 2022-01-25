@@ -14,7 +14,7 @@ namespace DataLibrary.BusinessLogic
         {
             Reload();
         }
-        public void Create(string name, string location, double rating, int roomsCount, byte[] previewImage)
+        public void Create(string name, string ownerEmail, string location, double rating, int roomsCount, byte[] previewImage, bool isConfirmed)
         {
 
             HotelModel hotel = new HotelModel
@@ -23,16 +23,17 @@ namespace DataLibrary.BusinessLogic
                 Location = location,
                 Rating = rating,
                 RoomsCount = roomsCount,
-                PreviewImage = previewImage
+                PreviewImage = previewImage,
+                IsConfirmed = isConfirmed,
             };
 
-            string sql = @"insert into dbo.Hotels (Name, Location, Rating, RoomsCount, PreviewImage) 
-                values (@Name, @Location, @Rating, @RoomsCount, @PreviewImage);";
+            string sql = @"insert into dbo.Hotels (Name, OwnerEmail, Location, Rating, RoomsCount, PreviewImage, IsConfirmed) 
+                values (@Name, @OwnerEmail, @Location, @Rating, @RoomsCount, @PreviewImage, @IsConfirmed);";
 
              SqlDataAccess.SaveData(sql, hotel);
         }
 
-        public List<HotelModel> Load()
+        public List<HotelModel> LoadConfirmed()
         {
             if (hotels == null)
                 Reload();
@@ -40,17 +41,20 @@ namespace DataLibrary.BusinessLogic
             return hotels;
         }
 
+        public List<HotelModel> LoadUnconfirmed()
+        {
+            string sql = @"select * from dbo.Hotels where IsConfirmed = 'false';";
+            return SqlDataAccess.LoadData<HotelModel>(sql);
+        }
 
         public void Reload()
         {
-            string sql = @"select * from dbo.Hotels;";
+            string sql = @"select * from dbo.Hotels where IsConfirmed = 'true';";
             hotels = SqlDataAccess.LoadData<HotelModel>(sql);
         }
 
         public HotelModel GetHotel(int _id)
         {
-
-           // hotel = SqlDataAccess.GetOjbect<HotelModel>("Hotels", "Id", _id.ToString());
             return hotels.Where(x => x.Id == _id).Single(); ;
         }
 
@@ -59,6 +63,12 @@ namespace DataLibrary.BusinessLogic
             string sql = $"DELETE from dbo.Hotels where Id = {id}";
             SqlDataAccess.ExecuteSqlRequest(sql);
             Reload();
+        }
+
+        public void Confirm(int id)
+        {
+            string sql = $"update dbo.Hotels set IsConfirmed = 'true' where Id = '{id}' ";
+            SqlDataAccess.ExecuteSqlRequest(sql);
         }
     }
 }

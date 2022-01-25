@@ -29,5 +29,6 @@ namespace BookARoom_test1.Models
 
         [Required]
         public IFormFile PreviwImageFile { get; set; } //image that uploads while creating hotel
+        public bool IsConfirmed { get; set; }
     }
 }

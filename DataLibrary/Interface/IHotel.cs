@@ -9,9 +9,13 @@ namespace DataLibrary.Interface
 {
     public interface IHotel
     {
-        void Create(string name, string location, double rating, int roomsCount, byte[] previewImage);
+        void Create(string name, string ownerEmail, string location, double rating, int roomsCount, byte[] previewImage, bool isConfirmed);
 
-        List<HotelModel> Load();
+        List<HotelModel> LoadConfirmed();
+        List<HotelModel> LoadUnconfirmed();
+        void Confirm(int id);
         void Delete(int id);
+        void Reload(); // set new values from db into static list
+
     }
 }

@@ -15,6 +15,7 @@ namespace DataLibrary.Models
         public double Rating { get; set; }
         public int RoomsCount { get; set; }
         public byte[] PreviewImage { get; set; }
+        public bool IsConfirmed { get; set; }
 
     }
 }

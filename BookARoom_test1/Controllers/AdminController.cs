@@ -11,12 +11,12 @@ namespace BookARoom_test1.Controllers
     [Authorize(Roles = "Admin")]
     public class AdminController : Controller
     {
-        IHotel repo = new HotelRepository();
+        IHotel repo = new HotelProcessor();
         IBookedRooms bookedRooms = new BookedRoomsProcessor();
         public IActionResult Index()
         {
 
-            return View();
+            return RedirectToAction("UnconfirmedList");
         }
 
         public IActionResult TotalProfit()
@@ -38,14 +38,13 @@ namespace BookARoom_test1.Controllers
                 });
             });
 
-
             return View(outputBooked);
         }
 
         public IActionResult EditList()
         {
            
-            var data = repo.Load();
+            var data = repo.LoadConfirmed();
             List<HotelModel> outputHotels = new List<HotelModel>();
 
             data.ForEach(hotel =>
@@ -66,9 +65,36 @@ namespace BookARoom_test1.Controllers
         public IActionResult Delete(int id)
         {
             repo.Delete(id);
+            repo.Reload();// set new values from db into static list
             return RedirectToAction("EditList");
         }
 
+        public IActionResult UnconfirmedList()
+        {
+            var data = repo.LoadUnconfirmed();
+            List<HotelModel> outputHotels = new List<HotelModel>();
+
+            data.ForEach(hotel =>
+           outputHotels.Add(new HotelModel
+           {
+               Name = hotel.Name,
+               OwnerEmail = hotel.OwnerEmail,
+               Location = hotel.Location,
+               Id = hotel.Id,
+               PreviewImage = hotel.PreviewImage,
+               Rating = hotel.Rating,
+               RoomCount = hotel.RoomsCount
+           }));
+
+            return View(outputHotels);
+        }
+
+        public IActionResult Confirm(int id)
+        {
+            repo.Confirm(id);
+            repo.Reload(); // set new values from db into static list
+            return RedirectToAction("UnconfirmedList");
+        }
 
     }
 }
