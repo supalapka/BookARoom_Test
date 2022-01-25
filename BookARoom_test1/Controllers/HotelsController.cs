@@ -15,10 +15,10 @@ namespace BookARoom_test1.Controllers
     {
         //HotelRepository -> Entity
         //Hotelprocessor -> Dapper
-        IHotel hotelRepository = new HotelRepository();
+        IHotel hotelRepository;
         //IHotel hotelRepository = new Hotelprocessor();
 
-        public HotelsController(IHotel _hotelRepository)
+        public HotelsController(IHotel _hotelRepository, MyDbContext ctx)
         {
             hotelRepository = _hotelRepository;
         }
@@ -43,10 +43,10 @@ namespace BookARoom_test1.Controllers
 
 
         [Route("Hotels/")]
-        public IActionResult List()
+        public async Task<IActionResult> List()
         {
             ViewBag.Message = "List";
-            var data = hotelRepository.LoadConfirmed();
+            var data = await hotelRepository.LoadConfirmed();
             List<HotelModel> hotels = new List<HotelModel>(); // output list
 
 

@@ -1,18 +1,27 @@
 ﻿using BookARoom_test1.Models;
 using DataLibrary.BusinessLogic;
 using DataLibrary.BusinessLogic.EntityFramework;
+using DataLibrary.DataAccess;
 using DataLibrary.Interface;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace BookARoom_test1.Controllers
 {
     [Authorize(Roles = "Admin")]
     public class AdminController : Controller
     {
-        IHotel repo = new HotelProcessor();
+        IHotel hotelRepository = new HotelRepository();
         IBookedRooms bookedRooms = new BookedRoomsProcessor();
+        private readonly MyDbContext ctx;
+
+        public AdminController(IHotel _hotelRepository,MyDbContext _ctx)
+        {
+            hotelRepository = _hotelRepository;
+            ctx = _ctx;
+        }
         public IActionResult Index()
         {
 
@@ -41,10 +50,10 @@ namespace BookARoom_test1.Controllers
             return View(outputBooked);
         }
 
-        public IActionResult EditList()
+        public async Task<IActionResult> EditList()
         {
            
-            var data = repo.LoadConfirmed();
+            var data = await hotelRepository.LoadConfirmed();
             List<HotelModel> outputHotels = new List<HotelModel>();
 
             data.ForEach(hotel =>
@@ -64,14 +73,14 @@ namespace BookARoom_test1.Controllers
 
         public IActionResult Delete(int id)
         {
-            repo.Delete(id);
-            repo.Reload();// set new values from db into static list
+            hotelRepository.Delete(id);
+            hotelRepository.Reload();// set new values from db into static list
             return RedirectToAction("EditList");
         }
 
         public IActionResult UnconfirmedList()
         {
-            var data = repo.LoadUnconfirmed();
+            var data = hotelRepository.LoadUnconfirmed();
             List<HotelModel> outputHotels = new List<HotelModel>();
 
             data.ForEach(hotel =>
@@ -91,8 +100,8 @@ namespace BookARoom_test1.Controllers
 
         public IActionResult Confirm(int id)
         {
-            repo.Confirm(id);
-            repo.Reload(); // set new values from db into static list
+            hotelRepository.Confirm(id);
+            hotelRepository.Reload(); // set new values from db into static list
             return RedirectToAction("UnconfirmedList");
         }
 

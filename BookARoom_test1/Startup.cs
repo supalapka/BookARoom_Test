@@ -36,7 +36,8 @@ namespace BookARoom_test1
             services.AddSingleton<IRoom, RoomProcessor>();//dapper
             services.AddSingleton<IRoom, RoomRepository>();//entity
 
-            
+            services.AddDbContext<MyDbContext>();
+
         }   
 
 

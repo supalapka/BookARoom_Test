@@ -3,6 +3,7 @@ using DataLibrary.Interface;
 using DataLibrary.Models;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace DataLibrary.BusinessLogic
 {
@@ -33,10 +34,10 @@ namespace DataLibrary.BusinessLogic
              SqlDataAccess.SaveData(sql, hotel);
         }
 
-        public List<HotelModel> LoadConfirmed()
+        public async Task<List<HotelModel>> LoadConfirmed()
         {
             if (hotels == null)
-                Reload();
+               await Reload();
 
             return hotels;
         }
@@ -47,7 +48,7 @@ namespace DataLibrary.BusinessLogic
             return SqlDataAccess.LoadData<HotelModel>(sql);
         }
 
-        public void Reload()
+        public async Task Reload()
         {
             string sql = @"select * from dbo.Hotels where IsConfirmed = 'true';";
             hotels = SqlDataAccess.LoadData<HotelModel>(sql);

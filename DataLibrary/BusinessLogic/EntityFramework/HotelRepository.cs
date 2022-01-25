@@ -3,6 +3,7 @@ using DataLibrary.Interface;
 using DataLibrary.Models;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace DataLibrary.BusinessLogic.EntityFramework
 {
@@ -27,10 +28,10 @@ namespace DataLibrary.BusinessLogic.EntityFramework
             await ctx.SaveChangesAsync();
         }
 
-        public List<HotelModel> LoadConfirmed()
+        public async Task<List<HotelModel>> LoadConfirmed()
         {
             if (hotels == null)
-                Reload();
+                await Reload();
 
             return hotels;
         }
@@ -40,7 +41,7 @@ namespace DataLibrary.BusinessLogic.EntityFramework
             return ctx.Hotels.Where(x => x.IsConfirmed == false).ToList();
         }
 
-        public void Reload() { hotels = ctx.Hotels.Where(x => x.IsConfirmed == true).ToList(); }
+        public async Task Reload() {  hotels = ctx.Hotels.Where(x => x.IsConfirmed == true).ToList(); }
 
         public HotelModel GetHotel(int _id) { return ctx.Hotels.Where(x => x.Id == _id).Single(); }
 

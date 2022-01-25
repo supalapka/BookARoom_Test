@@ -11,11 +11,11 @@ namespace DataLibrary.Interface
     {
         void Create(string name, string ownerEmail, string location, double rating, int roomsCount, byte[] previewImage, bool isConfirmed);
 
-        List<HotelModel> LoadConfirmed();
+        Task<List<HotelModel>> LoadConfirmed();
         List<HotelModel> LoadUnconfirmed();
         void Confirm(int id);
         void Delete(int id);
-        void Reload(); // set new values from db into static list
+        Task Reload(); // set new values from db into static list
 
     }
 }
