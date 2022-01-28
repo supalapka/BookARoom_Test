@@ -2,7 +2,6 @@
 using BookARoom_test1.Models;
 using DataLibrary;
 using DataLibrary.BusinessLogic;
-using DataLibrary.BusinessLogic.EntityFramework;
 using DataLibrary.DataAccess;
 using DataLibrary.Interface;
 using Microsoft.AspNet.Identity;

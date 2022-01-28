@@ -9,8 +9,6 @@ namespace BookARoom_test1.Controllers
 {
     public class HomeController : Controller
     {
-
-     
         public IActionResult Index()
         {
             ViewBag.Message = "Index";

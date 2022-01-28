@@ -1,9 +1,6 @@
 ﻿using DataLibrary.DataAccess;
 using DataLibrary.Models;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace DataLibrary.BusinessLogic
@@ -23,7 +20,7 @@ namespace DataLibrary.BusinessLogic
             string sql = @"insert into dbo.RoomGallery (HotelRoomId, RoomName, PreviewImage) 
                 values (@HotelRoomId, @RoomName, @PreviewImage);";
 
-           await SqlDataAccess.SaveDataAsync(sql, room);
+            await SqlDataAccess.SaveDataAsync(sql, room);
         }
 
         public static async Task<List<RoomGalleryModel>> LoadAsync()
@@ -41,7 +38,7 @@ namespace DataLibrary.BusinessLogic
 
         public static async Task<byte[]> GetImageAsync(string paramName, string paramValue)
         {
-            RoomGalleryModel gallery= await SqlDataAccess.GetOjbectAsync<RoomGalleryModel>("RoomGallery", paramName, paramValue);
+            RoomGalleryModel gallery = await SqlDataAccess.GetOjbectAsync<RoomGalleryModel>("RoomGallery", paramName, paramValue);
             if (gallery == null)
                 gallery = new RoomGalleryModel();
             return gallery.PreviewImage;

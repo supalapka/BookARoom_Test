@@ -27,13 +27,13 @@ namespace DataLibrary.BusinessLogic
             string sql = @"insert into dbo.Hotels (Name, OwnerEmail, Location, Rating, RoomsCount, PreviewImage, IsConfirmed) 
                 values (@Name, @OwnerEmail, @Location, @Rating, @RoomsCount, @PreviewImage, @IsConfirmed);";
 
-             await SqlDataAccess.SaveDataAsync(sql, hotel);
+            await SqlDataAccess.SaveDataAsync(sql, hotel);
         }
 
         public async Task<List<HotelModel>> LoadConfirmedAsync()
         {
             if (hotels == null)
-               await ReloadAsync();
+                await ReloadAsync();
 
             return hotels;
         }

@@ -4,7 +4,6 @@ using DataLibrary.Models;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace DataLibrary.BusinessLogic.EntityFramework
@@ -33,7 +32,7 @@ namespace DataLibrary.BusinessLogic.EntityFramework
 
         public async Task<int> TotalSumAsync()
         {
-            return await ctx.BookedRooms.SumAsync(x=>x.Price);
+            return await ctx.BookedRooms.SumAsync(x => x.Price);
         }
     }
 }

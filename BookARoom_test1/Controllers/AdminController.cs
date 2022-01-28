@@ -1,7 +1,6 @@
 ﻿using BookARoom_test1.Models;
 using DataLibrary.BusinessLogic;
 using DataLibrary.BusinessLogic.EntityFramework;
-using DataLibrary.DataAccess;
 using DataLibrary.Interface;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -13,14 +12,12 @@ namespace BookARoom_test1.Controllers
     [Authorize(Roles = "Admin")]
     public class AdminController : Controller
     {
-        IHotel hotelRepository = new HotelRepository();
-        IBookedRooms bookedRooms = new BookedRoomsProcessor();
-        private readonly MyDbContext ctx;
+        private readonly IHotel hotelRepository = new HotelRepository();
+        private readonly IBookedRooms bookedRooms = new BookedRoomsProcessor();
 
-        public AdminController(IHotel _hotelRepository, MyDbContext _ctx)
+        public AdminController(IHotel _hotelRepository)
         {
             hotelRepository = _hotelRepository;
-            ctx = _ctx;
         }
         public IActionResult Index()
         {

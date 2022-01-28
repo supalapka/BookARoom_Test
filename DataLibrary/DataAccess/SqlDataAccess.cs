@@ -10,7 +10,7 @@ namespace DataLibrary.DataAccess
 {
     public class SqlDataAccess
     {
-        public static string connectionString; 
+        public static string connectionString;
         public static string GetConnectionString()
         {
             return connectionString;
@@ -20,7 +20,7 @@ namespace DataLibrary.DataAccess
         {
             using (IDbConnection ctx = new SqlConnection(GetConnectionString()))
             {
-                var result =  await ctx.QueryAsync<T>(sql);
+                var result = await ctx.QueryAsync<T>(sql);
                 return result.ToList();
             }
         }

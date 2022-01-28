@@ -42,7 +42,7 @@ namespace DataLibrary.BusinessLogic.EntityFramework
             return await ctx.Hotels.Where(x => x.IsConfirmed == false).ToListAsync();
         }
 
-        public async Task ReloadAsync() {  hotels = await ctx.Hotels.Where(x => x.IsConfirmed == true).ToListAsync(); }
+        public async Task ReloadAsync() { hotels = await ctx.Hotels.Where(x => x.IsConfirmed == true).ToListAsync(); }
 
         public async Task<HotelModel> GetHotel(int _id) { return await ctx.Hotels.Where(x => x.Id == _id).SingleAsync(); }
 

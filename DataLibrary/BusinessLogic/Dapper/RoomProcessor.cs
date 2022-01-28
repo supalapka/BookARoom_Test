@@ -39,8 +39,8 @@ namespace DataLibrary.BusinessLogic
 
         public async Task ReloadAsync()//load data into rooms
         {
-                string sql = @"select * from dbo.Rooms;";
-                rooms = await SqlDataAccess.LoadDataAsync<RoomModel>(sql);
+            string sql = @"select * from dbo.Rooms;";
+            rooms = await SqlDataAccess.LoadDataAsync<RoomModel>(sql);
         }
 
         public async Task<List<RoomModel>> GetFreeRoomsAsync(string hotelName)
@@ -54,7 +54,7 @@ namespace DataLibrary.BusinessLogic
         {
             if (rooms == null)
                 await ReloadAsync();
-            return  rooms.Where(x => x.RoomNUmber == rooomNumber).FirstOrDefault();
+            return rooms.Where(x => x.RoomNUmber == rooomNumber).FirstOrDefault();
         }
 
         public async Task BookRoomAsync(int roomNumber) //mark the room as already booked

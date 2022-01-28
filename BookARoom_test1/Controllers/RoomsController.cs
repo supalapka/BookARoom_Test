@@ -16,8 +16,8 @@ namespace BookARoom_test1.Controllers
     [Authorize]
     public class RoomsController : Controller
     {
-        IRoom roomRepository = new RoomRepository(); //Entity
-                                                     // IRoom roomRepository = new RoomProcessor(); //Dapper
+        private readonly IRoom roomRepository = new RoomRepository(); //Entity
+                                                                      //private readonly IRoom roomRepository = new RoomProcessor(); //Dapper
         public IActionResult Index()
         {
             return View();

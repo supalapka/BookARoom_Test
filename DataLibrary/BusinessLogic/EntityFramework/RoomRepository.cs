@@ -13,7 +13,7 @@ namespace DataLibrary.BusinessLogic.EntityFramework
         private List<RoomModel> rooms;
         MyDbContext ctx = new MyDbContext();
 
-      
+
 
         public async Task CreateAsync(int roomNumber, int numberOfRooms, string description, int price, string hotelName)
         {

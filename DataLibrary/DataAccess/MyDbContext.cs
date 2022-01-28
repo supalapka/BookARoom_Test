@@ -5,7 +5,7 @@ namespace DataLibrary.DataAccess
 {
     public class MyDbContext : DbContext
     {
-        public static string connectionString; 
+        public static string connectionString;
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
