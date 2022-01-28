@@ -10,7 +10,7 @@ namespace DataLibrary.BusinessLogic
 {
     public static class UserProcessor
     {
-        public static void Create(string login, string password)
+        public static async Task CreateAsync(string login, string password)
         {
 
             UserModel user = new UserModel { Login = login, Password = password };
@@ -18,15 +18,15 @@ namespace DataLibrary.BusinessLogic
             string sql = @"insert into dbo.Users (Login, Password) 
                 values (@Login, @Password);";
 
-            SqlDataAccess.SaveData(sql, user);
+            await SqlDataAccess.SaveDataAsync(sql, user);
         }
 
-        public static List<UserModel> Load()
+        public static async Task<List<UserModel>> LoadAsync()
         {
             string sql = @"select Id, Login, Password
             from dbo.Users;";
 
-            return SqlDataAccess.LoadData<UserModel>(sql);
+            return await SqlDataAccess.LoadDataAsync<UserModel>(sql);
         }
 
     }

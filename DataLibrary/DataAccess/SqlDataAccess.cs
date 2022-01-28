@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace DataLibrary.DataAccess
 {
@@ -15,51 +16,54 @@ namespace DataLibrary.DataAccess
             return connectionString;
         }
 
-        public static List<T> LoadData<T>(string sql)
+        public static async Task<List<T>> LoadDataAsync<T>(string sql)
         {
             using (IDbConnection ctx = new SqlConnection(GetConnectionString()))
             {
-                return ctx.Query<T>(sql).ToList();
+                var result =  await ctx.QueryAsync<T>(sql);
+                return result.ToList();
             }
         }
 
-        public static void SaveData<T>(string sql, T data)
+        public static async Task SaveDataAsync<T>(string sql, T data)
         {
             using (IDbConnection ctx = new SqlConnection(GetConnectionString()))
             {
-                ctx.Execute(sql, data);
+                await ctx.ExecuteAsync(sql, data);
             }
         }
 
-        public static T GetOjbect<T>(string dbTable, string paramName, string paramValue)
+        public static async Task<T> GetOjbectAsync<T>(string dbTable, string paramName, string paramValue)
         {
             using (IDbConnection ctx = new SqlConnection(GetConnectionString()))
             {
-                return ctx.Query<T>($"select * from dbo.{dbTable} where {paramName} = '{paramValue}'").FirstOrDefault();
+                var result = await ctx.QueryAsync<T>($"select * from dbo.{dbTable} where {paramName} = '{paramValue}'");
+                return result.FirstOrDefault();
             }
         }
 
-        public static List<T> SelectOjbects<T>(string dbTable, string paramName, string paramValue)
+        public static async Task<List<T>> SelectOjbectsAsync<T>(string dbTable, string paramName, string paramValue)
         {
             using (IDbConnection ctx = new SqlConnection(GetConnectionString()))
             {
-                return ctx.Query<T>($"select * from dbo.{dbTable} where {paramName} = {paramValue}").ToList();
+                var result = await ctx.QueryAsync<T>($"select * from dbo.{dbTable} where {paramName} = {paramValue}");
+                return result.ToList();
             }
         }
 
-        public static void ExecuteSqlRequest(string sql)
+        public static async Task ExecuteSqlRequestAsync(string sql)
         {
             using (IDbConnection ctx = new SqlConnection(GetConnectionString()))
             {
-                ctx.Execute(sql);
+                await ctx.ExecuteAsync(sql);
             }
         }
 
-        public static int GetSum(string sql) //rename adn set generic type
+        public static async Task<int> GetSumAsync(string sql) //rename and set generic type
         {
             using (IDbConnection ctx = new SqlConnection(GetConnectionString()))
             {
-                return Convert.ToInt32(ctx.Query<int>(sql).Single());
+                return Convert.ToInt32(await ctx.QueryAsync<int>(sql));
             }
         }
     }

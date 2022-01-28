@@ -1,10 +1,9 @@
 ﻿using DataLibrary.DataAccess;
 using DataLibrary.Interface;
 using DataLibrary.Models;
-using System;
+using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace DataLibrary.BusinessLogic.EntityFramework
@@ -14,18 +13,9 @@ namespace DataLibrary.BusinessLogic.EntityFramework
         private List<RoomModel> rooms;
         MyDbContext ctx = new MyDbContext();
 
-       public RoomRepository()
-        {
-            Reload();
-        }
+      
 
-        public void BookRoom(int roomNumber) //mark the room as already booked
-        {
-            rooms.Where(x => x.RoomNUmber == roomNumber).Single().IsBooked = true; 
-            ctx.SaveChangesAsync();
-        }
-
-        public void Create(int roomNumber, int numberOfRooms, string description, int price, string hotelName)
+        public async Task CreateAsync(int roomNumber, int numberOfRooms, string description, int price, string hotelName)
         {
             ctx.Rooms.Add(new RoomModel
             {
@@ -35,27 +25,41 @@ namespace DataLibrary.BusinessLogic.EntityFramework
                 Price = price,
                 HotelName = hotelName
             });
-            ctx.SaveChangesAsync();
+            await ctx.SaveChangesAsync();
         }
 
-        public List<RoomModel> GetFreeRooms(string hotelName)
+        public async Task<List<RoomModel>> GetFreeRoomsAsync(string hotelName)
         {
+            if (rooms == null)
+                await ReloadAsync();
             return rooms.Where(x => x.IsBooked == false && x.HotelName == hotelName).ToList();
         }
 
-        public RoomModel GetRoom(int rooomNumber)
+        public async Task<RoomModel> GetRoomAsync(int rooomNumber)
         {
+            if (rooms == null)
+                await ReloadAsync();
             return rooms.Where(x => x.RoomNUmber == rooomNumber).FirstOrDefault();
         }
 
-        public List<RoomModel> Load()
+        public async Task<List<RoomModel>> LoadAsync()
         {
+            if (rooms == null)
+                await ReloadAsync();
             return rooms.ToList();
         }
 
-        public void Reload()
+        public async Task ReloadAsync()
         {
-            rooms = ctx.Rooms.ToList();
+            rooms = await ctx.Rooms.ToListAsync();
+        }
+
+        public async Task BookRoomAsync(int roomNumber) //mark the room as already booked
+        {
+            ctx.Rooms.Where(x => x.RoomNUmber == roomNumber).Single().IsBooked = true;
+            await ctx.SaveChangesAsync();
+
+            await ReloadAsync(); // set new valuse into this list from db
         }
     }
 }

@@ -9,12 +9,11 @@ namespace DataLibrary.Interface
 {
     public interface IRoom
     {
-        void Create(int roomNumber, int numberOfRooms, string description, int price, string hotelName);
-        List<RoomModel> Load();
-        List<RoomModel> GetFreeRooms(string hotelName);
-        RoomModel GetRoom(int rooomNumber);
-        void BookRoom(int roomNumber);
-
-        void Reload();
+        Task CreateAsync(int roomNumber, int numberOfRooms, string description, int price, string hotelName);
+        Task<List<RoomModel>> LoadAsync();
+        Task<List<RoomModel>> GetFreeRoomsAsync(string hotelName);
+        Task<RoomModel> GetRoomAsync(int rooomNumber);
+        Task BookRoomAsync(int roomNumber);
+        Task ReloadAsync();
     }
 }

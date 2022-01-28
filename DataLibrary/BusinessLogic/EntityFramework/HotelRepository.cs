@@ -1,6 +1,7 @@
 ﻿using DataLibrary.DataAccess;
 using DataLibrary.Interface;
 using DataLibrary.Models;
+using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -11,7 +12,7 @@ namespace DataLibrary.BusinessLogic.EntityFramework
     {
         private List<HotelModel> hotels;
         MyDbContext ctx = new MyDbContext();
-        public async void Create(string name, string ownerEmail, string location, double rating, int roomsCount, byte[] previewImage, bool isConfirmed)
+        public async Task CreateAsync(string name, string ownerEmail, string location, double rating, int roomsCount, byte[] previewImage, bool isConfirmed)
         {
             HotelModel hotel = new HotelModel
             {
@@ -24,41 +25,41 @@ namespace DataLibrary.BusinessLogic.EntityFramework
                 IsConfirmed = isConfirmed,
             };
 
-            ctx.Hotels.Add(hotel);
+            await ctx.Hotels.AddAsync(hotel);
             await ctx.SaveChangesAsync();
         }
 
-        public async Task<List<HotelModel>> LoadConfirmed()
+        public async Task<List<HotelModel>> LoadConfirmedAsync()
         {
             if (hotels == null)
-                await Reload();
+                await ReloadAsync();
 
             return hotels;
         }
 
-        public List<HotelModel> LoadUnconfirmed()
+        public async Task<List<HotelModel>> LoadUnconfirmedAsync()
         {
-            return ctx.Hotels.Where(x => x.IsConfirmed == false).ToList();
+            return await ctx.Hotels.Where(x => x.IsConfirmed == false).ToListAsync();
         }
 
-        public async Task Reload() {  hotels = ctx.Hotels.Where(x => x.IsConfirmed == true).ToList(); }
+        public async Task ReloadAsync() {  hotels = await ctx.Hotels.Where(x => x.IsConfirmed == true).ToListAsync(); }
 
-        public HotelModel GetHotel(int _id) { return ctx.Hotels.Where(x => x.Id == _id).Single(); }
+        public async Task<HotelModel> GetHotel(int _id) { return await ctx.Hotels.Where(x => x.Id == _id).SingleAsync(); }
 
-        public async void Delete(int id)
+        public async Task DeleteAsync(int id)
         {
-            if (hotels == null) Reload();
+            if (hotels == null) await ReloadAsync();
             ctx.Hotels.Remove(hotels.Where(x => x.Id == id).Single());
             await ctx.SaveChangesAsync();
-            Reload();
+            await ReloadAsync();
         }
 
-        public async void Confirm(int id)
+        public async Task ConfirmAsync(int id)
         {
 
             ctx.Hotels.Where(x => x.Id == id).Single().IsConfirmed = true;
             await ctx.SaveChangesAsync();
-            Reload();
+            await ReloadAsync();
         }
     }
 }

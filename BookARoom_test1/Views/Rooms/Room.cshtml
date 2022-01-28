@@ -16,7 +16,7 @@
         <p id="test" class="roomInfo">About: @Model.Description</p>
         <p  class="roomInfo">Price: <span id="priceTagSpan">@Model.Price</span>$/Night</p>
 
-        var data = RoomGalleryProcessor.SelectGallery(@Model.Id);
+        var data = await RoomGalleryProcessor.SelectGalleryAsync(@Model.Id);
         int i =0;
 
         <div id="carouselExampleControls" class="carousel slide" data-ride="carousel">

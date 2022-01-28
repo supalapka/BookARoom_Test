@@ -9,9 +9,9 @@ namespace DataLibrary.Interface
 {
     public interface IBookedRooms
     {
-        List<BookedRoomsModel> Load();
-        void Create(string hotelName, int roomNumber, string ownerEmail,DateTime startDate,DateTime endDate, int price);
-        int TotalSum();
+        Task<List<BookedRoomsModel>> LoadAsync();
+        Task CreateAsync(string hotelName, int roomNumber, string ownerEmail,DateTime startDate,DateTime endDate, int price);
+        Task<int> TotalSumAsync();
 
     }
 }

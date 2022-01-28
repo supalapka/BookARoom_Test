@@ -10,7 +10,7 @@ namespace DataLibrary.BusinessLogic
 {
     public class RoomGalleryProcessor
     {
-        public static void Create(int hotelRoomId, string roomName, byte[] image)
+        public static async Task CreateAsync(int hotelRoomId, string roomName, byte[] image)
         {
 
             RoomGalleryModel room = new RoomGalleryModel
@@ -23,25 +23,25 @@ namespace DataLibrary.BusinessLogic
             string sql = @"insert into dbo.RoomGallery (HotelRoomId, RoomName, PreviewImage) 
                 values (@HotelRoomId, @RoomName, @PreviewImage);";
 
-            SqlDataAccess.SaveData(sql, room);
+           await SqlDataAccess.SaveDataAsync(sql, room);
         }
 
-        public static List<RoomGalleryModel> Load()
+        public static async Task<List<RoomGalleryModel>> LoadAsync()
         {
             string sql = @"select * from dbo.RoomGallery;";
 
-            return SqlDataAccess.LoadData<RoomGalleryModel>(sql);
+            return await SqlDataAccess.LoadDataAsync<RoomGalleryModel>(sql);
         }
 
 
-        public static List<RoomGalleryModel> SelectGallery(int param)
+        public static async Task<List<RoomGalleryModel>> SelectGalleryAsync(int param)
         {
-            return SqlDataAccess.SelectOjbects<RoomGalleryModel>("RoomGallery", "HotelRoomId", param.ToString());
+            return await SqlDataAccess.SelectOjbectsAsync<RoomGalleryModel>("RoomGallery", "HotelRoomId", param.ToString());
         }
 
-        public static byte[] GetImage(string paramName, string paramValue)
+        public static async Task<byte[]> GetImageAsync(string paramName, string paramValue)
         {
-            RoomGalleryModel gallery= SqlDataAccess.GetOjbect<RoomGalleryModel>("RoomGallery", paramName, paramValue);
+            RoomGalleryModel gallery= await SqlDataAccess.GetOjbectAsync<RoomGalleryModel>("RoomGallery", paramName, paramValue);
             if (gallery == null)
                 gallery = new RoomGalleryModel();
             return gallery.PreviewImage;

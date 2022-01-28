@@ -1,16 +1,18 @@
 ﻿using DataLibrary.DataAccess;
 using DataLibrary.Interface;
 using DataLibrary.Models;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace DataLibrary.BusinessLogic.EntityFramework
 {
     public class BookedRooms : IBookedRooms
     {
         MyDbContext ctx = new MyDbContext();
-        public void Create(string hotelName, int roomNumber, string ownerEmail, DateTime startDate, DateTime endDate, int price)
+        public async Task CreateAsync(string hotelName, int roomNumber, string ownerEmail, DateTime startDate, DateTime endDate, int price)
         {
             ctx.BookedRooms.Add(new BookedRoomsModel
             {
@@ -21,17 +23,17 @@ namespace DataLibrary.BusinessLogic.EntityFramework
                 EndDate = endDate,
                 Price = price
             });
-            ctx.SaveChangesAsync();
+            await ctx.SaveChangesAsync();
         }
 
-        public List<BookedRoomsModel> Load()
+        public async Task<List<BookedRoomsModel>> LoadAsync()
         {
-            return ctx.BookedRooms.ToList();
+            return await ctx.BookedRooms.ToListAsync();
         }
 
-        public int TotalSum()
+        public async Task<int> TotalSumAsync()
         {
-            return ctx.BookedRooms.Sum(x=>x.Price);
+            return await ctx.BookedRooms.SumAsync(x=>x.Price);
         }
     }
 }

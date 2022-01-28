@@ -9,13 +9,12 @@ namespace DataLibrary.Interface
 {
     public interface IHotel
     {
-        void Create(string name, string ownerEmail, string location, double rating, int roomsCount, byte[] previewImage, bool isConfirmed);
-
-        Task<List<HotelModel>> LoadConfirmed();
-        List<HotelModel> LoadUnconfirmed();
-        void Confirm(int id);
-        void Delete(int id);
-        Task Reload(); // set new values from db into static list
+        Task CreateAsync(string name, string ownerEmail, string location, double rating, int roomsCount, byte[] previewImage, bool isConfirmed);
+        Task<List<HotelModel>> LoadConfirmedAsync();
+        Task<List<HotelModel>> LoadUnconfirmedAsync();
+        Task ConfirmAsync(int id);
+        Task DeleteAsync(int id);
+        Task ReloadAsync(); // set new values from db into static list
 
     }
 }

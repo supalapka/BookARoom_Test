@@ -3,13 +3,14 @@ using DataLibrary.Interface;
 using DataLibrary.Models;
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace DataLibrary.BusinessLogic
 {
     public class BookedRoomsProcessor : IBookedRooms
     {
 
-        public void Create(string hotelName, int roomNumber, string ownerEmail, DateTime start, DateTime end, int price)
+        public async Task CreateAsync(string hotelName, int roomNumber, string ownerEmail, DateTime start, DateTime end, int price)
         {
 
             BookedRoomsModel bookedRoom = new BookedRoomsModel
@@ -25,20 +26,20 @@ namespace DataLibrary.BusinessLogic
             string sql = @"insert into dbo.BookedRooms (HotelName, OwnerEmail, RoomNumber,StartDate, EndDate, Price) 
                 values (@HotelName, @OwnerEmail, @RoomNumber, @StartDate, @EndDate, @Price);";
 
-            SqlDataAccess.SaveData(sql, bookedRoom);
+            await SqlDataAccess.SaveDataAsync(sql, bookedRoom);
         }
 
-        public List<BookedRoomsModel> Load()
+        public async Task<List<BookedRoomsModel>> LoadAsync()
         {
             string sql = @"select *  from dbo.BookedRooms;";
 
-            return SqlDataAccess.LoadData<BookedRoomsModel>(sql);
+            return await SqlDataAccess.LoadDataAsync<BookedRoomsModel>(sql);
         }
 
-        public int TotalSum()
+        public async Task<int> TotalSumAsync()
         {
             string sql = @"select sum(Price) from dbo.BookedRooms;";
-            return SqlDataAccess.GetSum(sql);
+            return await SqlDataAccess.GetSumAsync(sql);
         }
     }
 }

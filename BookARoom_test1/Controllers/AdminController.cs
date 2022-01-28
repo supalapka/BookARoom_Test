@@ -17,7 +17,7 @@ namespace BookARoom_test1.Controllers
         IBookedRooms bookedRooms = new BookedRoomsProcessor();
         private readonly MyDbContext ctx;
 
-        public AdminController(IHotel _hotelRepository,MyDbContext _ctx)
+        public AdminController(IHotel _hotelRepository, MyDbContext _ctx)
         {
             hotelRepository = _hotelRepository;
             ctx = _ctx;
@@ -28,11 +28,11 @@ namespace BookARoom_test1.Controllers
             return RedirectToAction("UnconfirmedList");
         }
 
-        public IActionResult TotalProfit()
+        public async Task<IActionResult> TotalProfit()
         {
             List<BookedRoomsModel> outputBooked = new List<BookedRoomsModel>(); //output list
 
-            var data = bookedRooms.Load();
+            var data = await bookedRooms.LoadAsync();
 
             data.ForEach(r =>
             {
@@ -52,8 +52,8 @@ namespace BookARoom_test1.Controllers
 
         public async Task<IActionResult> EditList()
         {
-           
-            var data = await hotelRepository.LoadConfirmed();
+
+            var data = await hotelRepository.LoadConfirmedAsync();
             List<HotelModel> outputHotels = new List<HotelModel>();
 
             data.ForEach(hotel =>
@@ -71,16 +71,15 @@ namespace BookARoom_test1.Controllers
             return View(outputHotels);
         }
 
-        public IActionResult Delete(int id)
+        public async Task<IActionResult> Delete(int id)
         {
-            hotelRepository.Delete(id);
-            hotelRepository.Reload();// set new values from db into static list
+            await hotelRepository.DeleteAsync(id);
             return RedirectToAction("EditList");
         }
 
-        public IActionResult UnconfirmedList()
+        public async Task<IActionResult> UnconfirmedList()
         {
-            var data = hotelRepository.LoadUnconfirmed();
+            var data = await hotelRepository.LoadUnconfirmedAsync();
             List<HotelModel> outputHotels = new List<HotelModel>();
 
             data.ForEach(hotel =>
@@ -98,10 +97,9 @@ namespace BookARoom_test1.Controllers
             return View(outputHotels);
         }
 
-        public IActionResult Confirm(int id)
+        public async Task<IActionResult> Confirm(int id)
         {
-            hotelRepository.Confirm(id);
-            hotelRepository.Reload(); // set new values from db into static list
+            await hotelRepository.ConfirmAsync(id);
             return RedirectToAction("UnconfirmedList");
         }
 

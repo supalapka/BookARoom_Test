@@ -11,11 +11,7 @@ namespace DataLibrary.BusinessLogic
     {
         private List<HotelModel> hotels;
 
-        public HotelProcessor()
-        {
-            Reload();
-        }
-        public void Create(string name, string ownerEmail, string location, double rating, int roomsCount, byte[] previewImage, bool isConfirmed)
+        public async Task CreateAsync(string name, string ownerEmail, string location, double rating, int roomsCount, byte[] previewImage, bool isConfirmed)
         {
 
             HotelModel hotel = new HotelModel
@@ -31,45 +27,50 @@ namespace DataLibrary.BusinessLogic
             string sql = @"insert into dbo.Hotels (Name, OwnerEmail, Location, Rating, RoomsCount, PreviewImage, IsConfirmed) 
                 values (@Name, @OwnerEmail, @Location, @Rating, @RoomsCount, @PreviewImage, @IsConfirmed);";
 
-             SqlDataAccess.SaveData(sql, hotel);
+             await SqlDataAccess.SaveDataAsync(sql, hotel);
         }
 
-        public async Task<List<HotelModel>> LoadConfirmed()
+        public async Task<List<HotelModel>> LoadConfirmedAsync()
         {
             if (hotels == null)
-               await Reload();
+               await ReloadAsync();
 
             return hotels;
         }
 
-        public List<HotelModel> LoadUnconfirmed()
+        public async Task<List<HotelModel>> LoadUnconfirmedAsync()
         {
             string sql = @"select * from dbo.Hotels where IsConfirmed = 'false';";
-            return SqlDataAccess.LoadData<HotelModel>(sql);
+            return await SqlDataAccess.LoadDataAsync<HotelModel>(sql);
         }
 
-        public async Task Reload()
+        public async Task ReloadAsync() //set new list into this.hotelList
         {
             string sql = @"select * from dbo.Hotels where IsConfirmed = 'true';";
-            hotels = SqlDataAccess.LoadData<HotelModel>(sql);
+            hotels = await SqlDataAccess.LoadDataAsync<HotelModel>(sql);
         }
 
-        public HotelModel GetHotel(int _id)
+        public HotelModel GetHotelAsync(int _id)
         {
             return hotels.Where(x => x.Id == _id).Single(); ;
         }
 
-        public void Delete(int id)
+        public async Task DeleteAsync(int id)
         {
             string sql = $"DELETE from dbo.Hotels where Id = {id}";
-            SqlDataAccess.ExecuteSqlRequest(sql);
-            Reload();
+            await SqlDataAccess.ExecuteSqlRequestAsync(sql);
+
+            await ReloadAsync(); //set new list into this.hotelList
         }
 
-        public void Confirm(int id)
+        public async Task ConfirmAsync(int id)
         {
             string sql = $"update dbo.Hotels set IsConfirmed = 'true' where Id = '{id}' ";
-            SqlDataAccess.ExecuteSqlRequest(sql);
+            await SqlDataAccess.ExecuteSqlRequestAsync(sql);
+
+            await ReloadAsync();
+
         }
+
     }
 }

@@ -3,6 +3,7 @@ using DataLibrary.Interface;
 using DataLibrary.Models;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace DataLibrary.BusinessLogic
 {
@@ -10,12 +11,7 @@ namespace DataLibrary.BusinessLogic
     {
         private List<RoomModel> rooms;
 
-        public RoomProcessor()
-        {
-            Reload(); //load data into rooms
-        }
-
-        public void Create(int roomNumber, int numberOfRooms, string description, int price, string hotenName)
+        public async Task CreateAsync(int roomNumber, int numberOfRooms, string description, int price, string hotenName)
         {
 
             RoomModel room = new RoomModel
@@ -30,39 +26,43 @@ namespace DataLibrary.BusinessLogic
             string sql = @"insert into dbo.Rooms (RoomNUmber, NumberOfRooms, Description, Price, HotelName) 
                 values (@RoomNUmber, @NumberOfRooms, @Description, @Price, @HotelName);";
 
-            SqlDataAccess.SaveData(sql, room);
+            await SqlDataAccess.SaveDataAsync(sql, room);
         }
 
-        public List<RoomModel> Load()
+        public async Task<List<RoomModel>> LoadAsync()
         {
             if (rooms == null)
-                Reload();
+                await ReloadAsync();
 
             return rooms;
         }
 
-        public void Reload()//load data into rooms
+        public async Task ReloadAsync()//load data into rooms
         {
                 string sql = @"select * from dbo.Rooms;";
-                rooms = SqlDataAccess.LoadData<RoomModel>(sql);
+                rooms = await SqlDataAccess.LoadDataAsync<RoomModel>(sql);
         }
 
-        public List<RoomModel> GetFreeRooms(string hotelName)
+        public async Task<List<RoomModel>> GetFreeRoomsAsync(string hotelName)
         {
             string sql = $"select * from dbo.Rooms where IsBooked = 0 && HotelName = '{hotelName}';";
 
-            return SqlDataAccess.LoadData<RoomModel>(sql);
+            return await SqlDataAccess.LoadDataAsync<RoomModel>(sql);
         }
 
-        public RoomModel GetRoom(int rooomNumber)
+        public async Task<RoomModel> GetRoomAsync(int rooomNumber)
         {
-            return rooms.Where(x => x.RoomNUmber == rooomNumber).FirstOrDefault();
+            if (rooms == null)
+                await ReloadAsync();
+            return  rooms.Where(x => x.RoomNUmber == rooomNumber).FirstOrDefault();
         }
 
-        public void BookRoom(int roomNumber) //mark the room as already booked
+        public async Task BookRoomAsync(int roomNumber) //mark the room as already booked
         {
             string sql = $"update dbo.Rooms Set IsBooked = True where RoomNumber = {roomNumber}";
-            SqlDataAccess.ExecuteSqlRequest(sql);
+            await SqlDataAccess.ExecuteSqlRequestAsync(sql);
+
+            await ReloadAsync(); // set new valuse into this list from db
         }
     }
 }

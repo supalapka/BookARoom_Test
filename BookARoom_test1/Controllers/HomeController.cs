@@ -51,7 +51,7 @@ namespace BookARoom_test1.Controllers
         [HttpPost]
         public async Task<IActionResult> SignUp(UserModel user)
         {
-            UserProcessor.Create(user.Login, user.Password);
+            await UserProcessor.CreateAsync(user.Login, user.Password);
             return RedirectToAction("Index");
         }
 

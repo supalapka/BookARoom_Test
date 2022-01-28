@@ -1,6 +1,7 @@
 ﻿using BookARoom_test1.Areas.Identity.Data;
 using BookARoom_test1.Models;
 using DataLibrary;
+using DataLibrary.BusinessLogic;
 using DataLibrary.BusinessLogic.EntityFramework;
 using DataLibrary.DataAccess;
 using DataLibrary.Interface;
@@ -15,10 +16,10 @@ namespace BookARoom_test1.Controllers
     {
         //HotelRepository -> Entity
         //Hotelprocessor -> Dapper
-        IHotel hotelRepository;
-        //IHotel hotelRepository = new Hotelprocessor();
+        private readonly IHotel hotelRepository = new HotelProcessor();
+        //private readonly IHotel hotelRepository = new HotelRepository();
 
-        public HotelsController(IHotel _hotelRepository, MyDbContext ctx)
+        public HotelsController(IHotel _hotelRepository)
         {
             hotelRepository = _hotelRepository;
         }
@@ -33,20 +34,20 @@ namespace BookARoom_test1.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateHotel(HotelModel hotel)
         {
-            var user = SqlDataAccess.GetOjbect<AuthUser>("AspNetUsers", "Id", User.Identity.GetUserId());
+            var user = await SqlDataAccess.GetOjbectAsync<AuthUser>("AspNetUsers", "Id", User.Identity.GetUserId());
             hotel.OwnerEmail = user.Email;
             hotel.IsConfirmed = false;
-            hotelRepository.Create(hotel.Name, hotel.OwnerEmail, hotel.Location, hotel.Rating, hotel.RoomCount,
+            await hotelRepository.CreateAsync(hotel.Name, hotel.OwnerEmail, hotel.Location, hotel.Rating, hotel.RoomCount,
                 MyFunctionsClass.FileToByteArrayAsync(hotel.PreviwImageFile), hotel.IsConfirmed);
             return View();
         }
 
 
         [Route("Hotels/")]
-        public async Task<IActionResult> List()
+        public async Task<IActionResult> ListAsync()
         {
             ViewBag.Message = "List";
-            var data = await hotelRepository.LoadConfirmed();
+            var data = await hotelRepository.LoadConfirmedAsync();
             List<HotelModel> hotels = new List<HotelModel>(); // output list
 
 
@@ -63,8 +64,6 @@ namespace BookARoom_test1.Controllers
             return View(hotels);
         }
 
-
-        
 
     }
 }
